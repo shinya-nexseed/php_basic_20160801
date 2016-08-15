@@ -1,10 +1,10 @@
 <?php
     // $_POSTが存在するかどうかで処理を分ける
-    $code = 0; // 初期値0を入れる
+    $nickname = ''; // 初期化
     if (!empty($_POST)) {
         print '検索ボタンが押されたとき';
         // フォームに入力されたデータを$codeに代入
-        $code = $_POST['code'];
+        $nickname = $_POST['nickname'];
     } else {
         print '普通にページが読み込まれたとき';
     }
@@ -17,7 +17,9 @@
     $dbh->query('SET NAMES utf8'); // 文字コード
 
     // ②SQL実行
-    $sql = 'SELECT * FROM `anketo` WHERE `code`=' . $code; // SQL文を用意
+    $sql = 'SELECT * FROM `anketo` WHERE
+    `nickname` LIKE "%' . $nickname . '%"'; // SQL文を用意
+    echo $sql;
     $stml = $dbh->prepare($sql); // DBオブジェクトにSQL文をセット
     $stml->execute(); // セットされたSQLをDBに対して実行
     // ↑ $stmlに取得したデータが代入される
@@ -35,9 +37,9 @@
 </head>
 <body>
   <!-- 検索フォーム作成 -->
-  <form method="post" action="kensaku.php">
-    ご意見コードを入力してください。<br>
-    <input type="text" name="code"><br>
+  <form method="post" action="kensaku_nickname.php">
+    ニックネームを入力してください。<br>
+    <input type="text" name="nickname"><br>
     <input type="submit" value="検索">
   </form>
   <?php
